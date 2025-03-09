@@ -1,14 +1,6 @@
 import React from 'react';
 import { Movie } from '../types/movie';
 import MovieCard from './MovieCard';
-import { 
-  MovieRow as StyledMovieRow, 
-  MovieRowTitle, 
-  MovieCarousel, 
-  CarouselItem,
-  Spinner,
-  ErrorContainer
-} from './styles/StyledComponents';
 
 interface MovieRowProps {
   title: string;
@@ -27,42 +19,48 @@ const MovieRow: React.FC<MovieRowProps> = ({
 }) => {
   if (isLoading) {
     return (
-      <StyledMovieRow>
-        <MovieRowTitle>{title}</MovieRowTitle>
-        <Spinner />
-      </StyledMovieRow>
+      <div className="my-10">
+        <h2 className="mb-4 text-2xl font-bold">{title}</h2>
+        <div className="flex justify-center items-center h-40">
+          <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary"></div>
+        </div>
+      </div>
     );
   }
 
   if (isError) {
     return (
-      <StyledMovieRow>
-        <MovieRowTitle>{title}</MovieRowTitle>
-        <ErrorContainer>Error loading movies</ErrorContainer>
-      </StyledMovieRow>
+      <div className="my-10">
+        <h2 className="mb-4 text-2xl font-bold">{title}</h2>
+        <div className="text-center p-6 bg-overlay rounded-md text-text-secondary">
+          Error loading movies
+        </div>
+      </div>
     );
   }
 
   if (!movies || movies.length === 0) {
     return (
-      <StyledMovieRow>
-        <MovieRowTitle>{title}</MovieRowTitle>
-        <ErrorContainer>No movies found</ErrorContainer>
-      </StyledMovieRow>
+      <div className="my-10">
+        <h2 className="mb-4 text-2xl font-bold">{title}</h2>
+        <div className="text-center p-6 bg-overlay rounded-md text-text-secondary">
+          No movies found
+        </div>
+      </div>
     );
   }
 
   return (
-    <StyledMovieRow>
-      <MovieRowTitle>{title}</MovieRowTitle>
-      <MovieCarousel>
+    <div className="my-10">
+      <h2 className="mb-4 text-2xl font-bold">{title}</h2>
+      <div className="flex overflow-x-auto pb-2.5 pt-2.5 scroll-smooth">
         {movies.map(movie => (
-          <CarouselItem key={movie.id}>
+          <div key={movie.id} className="flex-none w-[200px] mr-4">
             <MovieCard movie={movie} onClick={onMovieClick} />
-          </CarouselItem>
+          </div>
         ))}
-      </MovieCarousel>
-    </StyledMovieRow>
+      </div>
+    </div>
   );
 };
 

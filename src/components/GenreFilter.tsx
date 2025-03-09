@@ -1,6 +1,5 @@
 import React from 'react';
 import { Genre } from '../types/movie';
-import { FilterContainer, FilterButton } from './styles/StyledComponents';
 
 interface GenreFilterProps {
   genres: Genre[] | undefined;
@@ -18,23 +17,23 @@ const GenreFilter: React.FC<GenreFilterProps> = ({
   }
 
   return (
-    <FilterContainer>
-      <FilterButton 
-        active={selectedGenre === null} 
+    <div className="flex flex-wrap gap-2 my-4">
+      <button 
+        className={`px-4 py-2 rounded-full text-sm font-medium transition-colors ${selectedGenre === null ? 'bg-primary text-white' : 'bg-overlay text-text-secondary hover:bg-overlay/80'}`}
         onClick={() => onSelectGenre(null)}
       >
         All
-      </FilterButton>
+      </button>
       {genres.map(genre => (
-        <FilterButton 
+        <button 
           key={genre.id} 
-          active={selectedGenre === genre.id} 
+          className={`px-4 py-2 rounded-full text-sm font-medium transition-colors ${selectedGenre === genre.id ? 'bg-primary text-white' : 'bg-overlay text-text-secondary hover:bg-overlay/80'}`}
           onClick={() => onSelectGenre(genre.id)}
         >
           {genre.name}
-        </FilterButton>
+        </button>
       ))}
-    </FilterContainer>
+    </div>
   );
 };
 

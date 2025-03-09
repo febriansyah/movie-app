@@ -2,18 +2,6 @@ import { useState, useEffect } from 'react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { Movie, MovieDetails as MovieDetailsType } from './types/movie';
 import { useTrendingMovies, useSearchMovies, useMovieDetails, useGenres, useMoviesByGenre } from './hooks/useMovies';
-import GlobalStyles from './components/styles/GlobalStyles';
-import {
-  Container,
-  Header,
-  Logo,
-  Main,
-  Footer,
-  MovieGrid,
-  LoadingContainer,
-  ErrorContainer,
-  Spinner
-} from './components/styles/StyledComponents';
 import MovieCard from './components/MovieCard';
 import MovieRow from './components/MovieRow';
 import SearchBar from './components/SearchBar';
@@ -84,21 +72,25 @@ function MovieApp() {
 
   return (
     <>
-      <GlobalStyles />
-      <Header className={isHeaderScrolled ? 'scrolled' : ''}>
-        <Container style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', width: '100%' }}>
-          <Logo onClick={() => { setSearchQuery(''); setSelectedGenreId(null); }}>MovieFlix</Logo>
+      <header className={`fixed w-full z-50 transition-all duration-300 ${isHeaderScrolled ? 'bg-background shadow-md' : 'bg-transparent'}`}>
+        <div className="max-w-[1400px] mx-auto px-5 py-4 flex justify-between items-center w-full">
+          <h1 
+            className="text-2xl font-bold text-primary cursor-pointer" 
+            onClick={() => { setSearchQuery(''); setSelectedGenreId(null); }}
+          >
+            MovieFlix
+          </h1>
           <SearchBar onSearch={handleSearch} />
-        </Container>
-      </Header>
+        </div>
+      </header>
 
-      <Main>
+      <main className="pt-16 min-h-screen bg-background text-text-primary">
         {/* Hero Section */}
         {!searchQuery && !selectedGenreId && trendingMovies?.results && trendingMovies.results.length > 0 && (
           <Hero movie={trendingMovies.results[0]} onDetailsClick={handleMovieClick} />
         )}
 
-        <Container>
+        <div className="max-w-[1400px] mx-auto px-5">
           {/* Genre Filter */}
           <GenreFilter 
             genres={genres?.genres} 
@@ -107,7 +99,7 @@ function MovieApp() {
           />
 
           {/* Movie Grid Title */}
-          <h2 style={{ margin: '20px 0' }}>
+          <h2 className="text-2xl font-bold my-5">
             {searchQuery
               ? `Search Results for "${searchQuery}"`
               : selectedGenreId
@@ -117,32 +109,32 @@ function MovieApp() {
 
           {/* Loading State */}
           {isLoading && (
-            <LoadingContainer>
-              <Spinner />
-            </LoadingContainer>
+            <div className="flex justify-center items-center h-[50vh]">
+              <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary"></div>
+            </div>
           )}
 
           {/* Error State */}
           {isError && (
-            <ErrorContainer>
+            <div className="text-center p-6 bg-overlay rounded-md text-text-secondary my-4">
               <p>Oops! Something went wrong. Please try again later.</p>
-            </ErrorContainer>
+            </div>
           )}
 
           {/* No Results */}
           {!isLoading && !isError && (!displayMovies || displayMovies.length === 0) && (
-            <ErrorContainer>
+            <div className="text-center p-6 bg-overlay rounded-md text-text-secondary my-4">
               <p>No movies found. Try a different search or filter.</p>
-            </ErrorContainer>
+            </div>
           )}
 
           {/* Movie Grid */}
           {!isLoading && !isError && displayMovies && displayMovies.length > 0 && (
-            <MovieGrid>
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6 my-6">
               {displayMovies.map(movie => (
                 <MovieCard key={movie.id} movie={movie} onClick={handleMovieClick} />
               ))}
-            </MovieGrid>
+            </div>
           )}
 
           {/* Movie Rows (only shown on home page) */}
@@ -170,14 +162,14 @@ function MovieApp() {
               ))}
             </>
           )}
-        </Container>
-      </Main>
+        </div>
+      </main>
 
-      <Footer>
-        <Container>
+      <footer className="bg-secondary py-6 mt-10">
+        <div className="max-w-[1400px] mx-auto px-5 text-center text-text-secondary">
           <p>© {new Date().getFullYear()} MovieFlix. Powered by The Movie Database API.</p>
-        </Container>
-      </Footer>
+        </div>
+      </footer>
 
       {/* Movie Details Modal */}
       {selectedMovieId && (

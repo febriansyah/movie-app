@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { SearchContainer, SearchInput, SearchButton } from './styles/StyledComponents';
 
 interface SearchBarProps {
   onSearch: (query: string) => void;
@@ -17,14 +16,19 @@ const SearchBar: React.FC<SearchBarProps> = ({ onSearch }) => {
 
   return (
     <form onSubmit={handleSubmit}>
-      <SearchContainer>
-        <SearchInput
+      <div className="relative w-full max-w-[500px]">
+        <input
+          className="w-full py-2.5 pl-4 pr-10 border-none rounded bg-overlay text-text-primary placeholder-text-secondary text-base focus:outline-none focus:ring-2 focus:ring-primary"
           type="text"
           placeholder="Search for movies..."
           value={query}
           onChange={(e) => setQuery(e.target.value)}
         />
-        <SearchButton type="submit" aria-label="Search">
+        <button 
+          className="absolute right-2.5 top-1/2 -translate-y-1/2 bg-transparent border-none text-text-primary text-xl"
+          type="submit" 
+          aria-label="Search"
+        >
           <svg 
             width="24" 
             height="24" 
@@ -37,8 +41,8 @@ const SearchBar: React.FC<SearchBarProps> = ({ onSearch }) => {
               fill="currentColor"
             />
           </svg>
-        </SearchButton>
-      </SearchContainer>
+        </button>
+      </div>
     </form>
   );
 };
